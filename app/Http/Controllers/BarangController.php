@@ -13,7 +13,7 @@ class BarangController extends Controller
     public function index()
     {
         $barangs = Barang::all();
-        return view('barangs.index', compact('barang'));
+        return view('barangs.index', compact('barangs'));
     }
 
     /**
@@ -24,13 +24,21 @@ class BarangController extends Controller
         return view('barangs.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'nama_alat' => 'required',
+            'kategori' => 'required',
+            'kondisi' => 'required',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
+
         Barang::create($request->all());
-        return redirect()->route('barangs.index')->with('success', 'Barang berhasil ditambahkan');
+
+        return redirect()->route('barangs.index')
+        ->with('success', 'Alat berhasil ditambahkan');
     }
 
     /**
@@ -54,8 +62,18 @@ class BarangController extends Controller
      */
     public function update(Request $request, Barang $barang)
     {
+
+        $request->validate([
+            'nama_alat' => 'required',
+            'kategori' => 'required',
+            'kondisi' => 'required',
+            'harga' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
+
         $barang->update($request->all());
-        return redirect()->route('barangs.index')->with('success', 'Barang berhasil diupdate');
+        return redirect()->route('barangs.index')
+        ->with('success', 'Alat berhasil diupdate');
     }
 
     /**
@@ -64,6 +82,7 @@ class BarangController extends Controller
     public function destroy( Barang $barang)
     {
         $barang->delete();
-        return redirect()->route('barangs.index')->with('success', 'Barang berhasil dihapus');
+        return redirect()->route('barangs.index')
+        ->with('success', 'Alat berhasil dihapus');
     }
 }
